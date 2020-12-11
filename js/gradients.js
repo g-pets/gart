@@ -23,20 +23,20 @@ function randomGradient() {
 
 
 function gradientGenerator() {
-    let keyColor = this.getRandom(1,360);
+    let keyColor = getRandom(180,300);
     let hue = {
 		top: keyColor,
-		bottom: keyColor
+		bottom: keyColor + getRandom(0,40)
     }
     
     let saturation = {
-		top: this.getRandom(50,60),
-		bottom: this.getRandom(40,50)
+		top: getRandom(60,70),
+		bottom: getRandom(40,60)
     }
     
 	let lightness = {
-		top: this.getRandom(1,10),
-		bottom: this.getRandom(15,30)
+		top: this.getRandom(5,10),
+		bottom: this.getRandom(15,25)
     }
     
 	return {
