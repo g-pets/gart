@@ -1,10 +1,7 @@
-// Palette Generator
-
-
+// Utils
 function random(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-
 function canvasSize(canvas, ctx) {
 	let parentWidth = canvas.offsetWidth;
 	let parentHeight = canvas.offsetHeight;
@@ -13,7 +10,6 @@ function canvasSize(canvas, ctx) {
 	if (ratio > 1) {
 		canvas.width = parentWidth * ratio;
 		canvas.height = parentHeight * ratio;
-		// ctx.scale(window.devicePixelRatio, window.devicePixelRatio);					
 	} else {
 		canvas.width = parentWidth;
 		canvas.height = parentHeight;
@@ -21,49 +17,51 @@ function canvasSize(canvas, ctx) {
 };
 
 
-// let swatches = {
-//     primary: [
-//         "hsl(47,95%,68%)"
-//     ]
-// }
+function hueShift(h,s) { 
+    h+=s; while (h>=360.0) h-=360.0; while (h<0.0) h+=360.0; return h; 
+}
 
-
-
-
-function colorsGenerator() {
-    let colors = {};
-    let hue = random(1,360);
-    let hue2;
-    if (hue < 320) {
-        hue2 = hue + 40
-    } else {
-        hue2 = hue - 40
+// Palette Generator
+function paletteGenerator(paletteOptions) {
+    // Basic Options
+    let shift = 30;
+    paletteOptions = paletteOptions || {}
+    let options = {
+        hue: paletteOptions.hue || [1,360],
+        saturation: paletteOptions.saturation || [40,50],
+        lightness: paletteOptions.lightness || [30,70]
     }
-    colors.primary = "hsl(" +hue+ ", 50%, 50%)";
-    colors.secondary = "hsl(" +random(1,360)+ ", 50%, 50%)";
+    let colors = {};
+
+    // Generate Base Color
+    let hueBase = random(options.hue[0],options.hue[1]);
+    let huePrev = hueShift(hueBase,-shift)
+    let hueNext = hueShift(hueBase,shift)
+    let saturationBase = random(options.saturation[0],options.saturation[1]);
+    let lightnessBase = random(options.lightness[0],options.lightness[1]);    
     
-    // Gradient
-    colors.gradientTop = "hsl(" +hue+ ", 50%, 10%)";
-    colors.gradientBottom = "hsl(" +hue2+ ", 50%, 30%)";
-    // colors.primary = primary;
-    // let hueStart = hs || [1,360];
-    // let hueEnd = he || [1,360];
-    // // let hueRange = hr || [1,360];
-    // // let saturationRange = sr || [0,100];
-    // // let lightnessRange = lr || [0,100];
-    // let colors = [];
-    // for (var i = 0; i < swatches; i++) {
-    //     let hue = random(hueStart,hueEnd);
-    //     let saturation = random(30,60);
-    //     let lightness = random(20,40);
-    //     colors.push("hsl(" +hue+ ", " +saturation+ "%, " +lightness+ "%)");
-    // }
+    colors.base = "hsl(" +hueBase+ ", 100%, 50%)";
+    colors.primary = "hsl(" +hueBase+ ", " +saturationBase+ "%, " +lightnessBase+ "%)";
+    colors.pastel = "hsl(" +hueBase+ ", 30%, 70%)";
+    colors.prev = "hsl(" +huePrev+ ", " +saturationBase+ "%, " +lightnessBase+ "%)";
+    colors.next = "hsl(" +hueNext+ ", " +saturationBase+ "%, " +lightnessBase+ "%)";
+    colors.complementary = "hsl(" +hueShift(hueBase,180)+ ", 100%, 50%)";
+    colors.gradientTop = "hsl(" +hueNext+ ", 50%, 10%)";
+    colors.gradientMiddle = "hsl(" +hueBase+ ", 50%, 20%)";
+    colors.gradientBottom = "hsl(" +huePrev+ ", 50%, 30%)";
+   
     return colors
 }
 
 
 function swatches(canvas, context, ) {
-	let colors = colorsGenerator();
+    // Options
+    let paletteOptions = {
+        hue: [1,360],
+        saturation: [50,70],
+        lightness: [30,80]
+    }
+	let colors = paletteGenerator(paletteOptions);
     let radius = 70;
     let colorsPos = canvas.height/2/2
     let gradPos = canvas.height/2
@@ -91,13 +89,13 @@ function swatches(canvas, context, ) {
      });
     
     // Gradients
-    context.beginPath();
-    let gradient = context.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0, colors.gradientTop);
-    gradient.addColorStop(1, colors.gradientBottom);
-    context.translate(gap,gradPos)
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 200, 300);
+    // context.beginPath();
+    // let gradient = context.createLinearGradient(0,0,0,300);
+    // gradient.addColorStop(0, colors.gradientTop);
+    // gradient.addColorStop(1, colors.gradientBottom);
+    // context.translate(gap,gradPos)
+    // context.fillStyle = gradient;
+    // context.fillRect(0, 0, 200, 300);
    
     // context.fill();
 }
