@@ -22,7 +22,26 @@ function randomGradient() {
 }
 
 
+function palette(hs, he) {
+    let hueStart = hs || [1,360];
+    let hueEnd = he || [1,360];
+    // let hueRange = hr || [1,360];
+    // let saturationRange = sr || [0,100];
+    // let lightnessRange = lr || [0,100];
+    let swatches = random(2,6);
+    let colors = [];
+    for (var i = 0; i < swatches; i++) {
+        let hue = random(hueStart,hueEnd);
+        let saturation = random(30,60);
+        let lightness = random(20,40);
+        colors.push("hsl(" +hue+ ", " +saturation+ "%, " +lightness+ "%)");
+    }
+    console.log(colors)
+    return colors;
+}
+
 function gradientGenerator() {
+
     let keyColor = getRandom(180,300);
     let hue = {
 		top: keyColor,

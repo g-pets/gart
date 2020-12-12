@@ -18,6 +18,9 @@
         canvas {
             display: block;
             position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
             width: 100%;
             height: 100%;
         }
@@ -28,7 +31,10 @@
             image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
             image-rendering: pixelated;                 /* Awesome future-browsers       */
             -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
-            }
+        }
+        #background {z-index:1}
+        #stars {z-index:2}
+        #waves {z-index:3}
     </style>
     <script>
         let config = {
@@ -43,17 +49,19 @@
     <div class="art" onclick="redraw()">
         <canvas id="background"></canvas>
         <canvas id="stars"></canvas>
+        <canvas id="waves"></canvas>
     </div>
-    <!-- <script src="/colors.js"></script> -->
     <script src="/js/utils.js"></script>
     <script src="/js/gradients.js"></script>
+    
     <script src="/js/background.js"></script>
     <script src="/js/stars.js"></script>
-    <!-- <script src="/canvas.js"></script> -->
+    <script src="/js/waves.js"></script>
     <script>
         function redraw() {
             background();
             stars();
+            waves();
         };
         redraw()
     </script>
