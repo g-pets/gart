@@ -42,4 +42,4 @@ function getRandomGradient() {
 	}
 };
 
-let gradientColors = getRandomGradient()
+// let gradientColors = getRandomGradient()
