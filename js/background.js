@@ -1,7 +1,7 @@
 function fillBackground(canvas, ctx) {	
 	// Options
 	let paletteOptions = {
-        hue: [250,330],
+        hue: [1,360],
         saturation: [50,70],
         lightness: [30,80]
     }

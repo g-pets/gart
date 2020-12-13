@@ -34,9 +34,10 @@
         }
         #background {z-index:1}
         #stars {z-index:2}
-        #objects {z-index:3}
-        #waves {z-index:4}
-        #noise {z-index:10; opacity: 0.05;}
+        #moon {z-index:3}
+        #waves {z-index:4;}
+        /* #waves {z-index:4; width: 90%; height: 90%; margin: 0 auto;} */
+        #noise {z-index:10; opacity: 0.06;}
     </style>
     <script>
         let config = {
@@ -49,28 +50,28 @@
 </head>
 <body>
     <div class="art" onclick="redraw()">
-        <!-- <canvas id="background"></canvas> -->
-        <!-- <canvas id="stars"></canvas> -->
+        <canvas id="background"></canvas>
+        <canvas id="stars"></canvas>
         <canvas id="waves"></canvas>
-        <!-- <canvas id="objects"></canvas> -->
-        <!-- <canvas id="noise"></canvas> -->
+        <canvas id="moon"></canvas>
+        <canvas id="noise"></canvas>
     </div>
     <script src="/js/utils.js"></script>
-    <!-- <script src="/js/palette.js"></script> -->
+    <script src="/js/palette.js"></script>
     
-    <!-- <script src="/js/background.js"></script> -->
-    <!-- <script src="/js/stars.js"></script> -->
+    <script src="/js/background.js"></script>
+    <script src="/js/stars.js"></script>
     <script src="/js/waves.js"></script>
-    <!-- <script src="/js/objects.js"></script> -->
-    <!-- <script src="/js/noise.js"></script> -->
+    <script src="/js/moon.js"></script>
+    <script src="/js/noise.js"></script>
    
     <script>
         function redraw() {
-            // background();
-            // stars();
+            background();
+            stars();
             waves();
-            // objects();
-            // noise();
+            moon();
+            noise();
             // palette();
         };
         redraw()
