@@ -38,6 +38,7 @@
         #moon {z-index:3}
         #waves {z-index:4;}
         /* #waves {z-index:4; width: 90%; height: 90%; margin: 0 auto;} */
+        #anim {z-index:5;}
         #noise {z-index:10; opacity: 0.06;}
     </style>
     <script>
@@ -55,27 +56,39 @@
         <canvas id="stars"></canvas>
         <canvas id="waves"></canvas>
         <canvas id="moon"></canvas>
-        <canvas id="noise"></canvas>
+        <!-- <canvas id="anim"></canvas> -->
+        <!-- <canvas id="noise"></canvas> -->
     </div>
     <script src="/js/utils.js"></script>
     <script src="/js/palette.js"></script>
     
     <script src="/js/background.js"></script>
     <script src="/js/stars.js"></script>
-    <script src="/js/waves.js"></script>
+    <script src="/js/waves2.js"></script>
     <script src="/js/moon.js"></script>
-    <script src="/js/noise.js"></script>
+    <!-- <script src="/js/anim.js"></script> -->
+    <!-- <script src="/js/noise.js"></script> -->
    
     <script>
+        function init() {
+            background();
+            stars();
+            waves();
+            // moon();
+            // noise();
+            // palette();
+        };
         function redraw() {
             background();
             stars();
             waves();
-            moon();
-            noise();
+            // moon();
+            // anim();
+            // noise();
             // palette();
         };
-        redraw()
+        init()
+        // redraw()
     </script>
 </body>
 </html>

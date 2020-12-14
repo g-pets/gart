@@ -23,12 +23,12 @@ function moonGenerator(canvas, context) {
 	context.fill();
 	
 	// context.beginPath();
-	let moonlight = context.createRadialGradient(x, y, 0, x, y, radius*4);
-	moonlight.addColorStop(1, "rgba(255,255,255,0");
-	moonlight.addColorStop(0, "rgba(255,255,255,0.1");
+	// let moonlight = context.createRadialGradient(x, y, 0, x, y, radius*4);
+	// moonlight.addColorStop(1, "rgba(255,255,255,0");
+	// moonlight.addColorStop(0, "rgba(255,255,255,0.1");
 	
-	context.fillStyle = moonlight;
-	context.fillRect(0, 0, canvas.width, canvas.height);
+	// context.fillStyle = moonlight;
+	// context.fillRect(0, 0, canvas.width, canvas.height);
 	
 }
 

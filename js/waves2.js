@@ -25,8 +25,10 @@ function waveGenerator(canvas, context) {
 	// let end =   { x: canvas.width-50,   y: canvas.height-waveHeight };
 
 
-	let layersCount = getRandom(1,15);
-	// let baseFrequency = getRandom(1,5);
+	// let layersCount = getRandom(1,15);
+	let layersCount = 1;
+	let baseFrequency = 2;
+	let offset = 100;
 	// let maxAmplitude = 200;
 	// let maxTrough = waveHeight;
 
@@ -38,23 +40,23 @@ function waveGenerator(canvas, context) {
 	const canvasHeight = canvas.height;
 	const canvasWidth = canvas.width;
 	const bottomLeft = {
-		X: 0,
+		X: 0 - offset,
 		Y: canvasHeight
 	};
 	const bottomRight = {
-		X: canvasWidth,
+		X: canvasWidth + offset,
 		Y: canvasHeight
 	};
 
 
 	// Lets
 	let topLeft = {
-		X: 0,
+		X: -offset,
 		Y: canvasHeight - waveHeight
 	};
 
 	let topRight = {
-		X: canvasWidth,
+		X: canvasWidth+offset,
 		Y: canvasHeight - waveHeight
 	}
 
@@ -75,15 +77,100 @@ function waveGenerator(canvas, context) {
 		topLeft.Y = topLeft.Y + shiftLeft;
 		topRight.Y = topRight.Y + shiftRight;
 
-		let position = {
-			cp1: 	{x: topLeft.X + random1, y: topLeft.Y - random2},
-			cp2: 	{x: topRight.X - random3, y: topRight.Y - random4}
-		}
 
+		
+		
+		
+
+
+		
+
+
+		// Generate Wave Points Positions (Map-Reduce)
+		const points = 10;
+		const total = 10000;
+		function generateControlPoints (total, points) {
+			let max = total/1.2
+			let arr = new Array(points);
+			
+			let sum = 0;
+			// Generate X-Position
+			do {
+				for (let i = 0; i < points; i++) {
+					arr[i] = Math.random();	
+				}
+				sum = arr.reduce((acc, val) => acc + val, 0);
+				const scale = (total - points) / sum;
+				arr = arr.map(val => Math.min(max, Math.round(val * scale) + 1));
+				sum = arr.reduce((acc, val) => acc + val, 0);
+			} while (sum - total);
+
+			let points2 = {}
+			
+			for (let i = 0; i < points; i++) {
+				points2[i] = {
+					x: arr[i],
+					y: 100
+				}
+				// arr[i] = Math.random();
+				
+			}
+			
+			// console.log(arr)
+			// console.log(points2)
+			
+			return points2;
+		};
+
+		let points3 = generateControlPoints (total, points)
+		console.log(points3.length)
 		context.beginPath();
 		context.moveTo(topLeft.X,topLeft.Y)
-		context.bezierCurveTo(position.cp1.x, position.cp1.y, position.cp2.x, position.cp2.y, topRight.X, topRight.Y);
 		
+		Object.keys(points3).forEach(function(element,i) {
+			context.bezierCurveTo(points3[i].x,points3[i].y, points3[i].x,points3[i].y);
+			// console.log(i)
+		});
+
+		
+		
+		// Test ––– Generate Wave Points Positions
+		// let runs = getRandom(1000,10000);
+		// function test1() {
+		// 	var t0 = performance.now();
+		// 	for (var tr = 0; tr < runs; tr++) {
+		// 		generateControlPoints(total, points);
+		// 	}
+		// 	var t1 = performance.now();
+		// 	// console.log(`Function 1 took: ${((t1 - t0) / runs).toFixed(4)} milliseconds (${t1-t0} ms / ${runs} runs)`);
+		// 	console.log(`Took: ${((t1 - t0) / runs).toFixed(4)} ms`);
+		// }
+		// test1()
+		
+		
+		
+		for (var i = 1; i <= baseFrequency; i++) {}
+		// let position = {
+		// 	cp1: 	{x: topLeft.X + random1, y: topLeft.Y - random2},
+		// 	cp2: 	{x: topRight.X - random3, y: topRight.Y - random4}
+		// }
+
+		let position = {
+			cp1: 	{x: topLeft.X + 100, y: topLeft.Y - 100},
+			cp2: 	{x: topRight.X - 200, y: topRight.Y - 200},
+			cpmid: 	{x: topRight.X - 500, y: topRight.Y - 200}
+		}
+
+		// context.beginPath();
+		// context.moveTo(topLeft.X,topLeft.Y)
+		// context.bezierCurveTo(position.cp1.x, position.cp1.y, position.cpmid.x, position.cpmid.y, position.cp2.x, position.cp2.y);
+		// context.bezierCurveTo(position.cp2.x, position.cp2.y, position.cpmid.x, position.cpmid.y, topRight.X, topRight.Y);
+		
+
+
+
+
+
 		// Shadows
 		if(i != 1) {
 			context.shadowColor = "rgba(0,0,0,0.2)"
