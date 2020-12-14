@@ -17,6 +17,11 @@ function generateControlPoints (canvasWidth, canvasHeight, amplitude, frequency)
 	return controlPoints;
 };
 
+
+
+
+
+
 function waveGenerator(canvas, context) {
 
 	let waveHeight = canvas.height/3;
@@ -59,12 +64,12 @@ function waveGenerator(canvas, context) {
 		},
 		
 		cp1: {
-			x: 200,
-			y: 150
+			x: 400,
+			y: 100
 		},
 		cp2: {
-			x: 300,
-			y: 150
+			x: 100,
+			y: 100
 		},
 		cp3: {
 			x: 400,
@@ -72,12 +77,12 @@ function waveGenerator(canvas, context) {
 		},
 		
 		cp4: {
-			x: 400,
-			y: 0
+			x: 500,
+			y: 150
 		},
 		cp5: {
 			x: 600,
-			y: 200
+			y: 600
 		},
 		cp6: {
 			x: 700,
@@ -89,8 +94,20 @@ function waveGenerator(canvas, context) {
 
 	context.beginPath();
     context.moveTo(coord.start.x,coord.start.y);
-	context.bezierCurveTo(coord.cp1.x,coord.cp1.y,coord.cp2.x,coord.cp2.y,coord.cp3.x,coord.cp3.y);
-	context.bezierCurveTo(coord.cp4.x,coord.cp4.y,coord.cp5.x,coord.cp5.y,coord.cp6.x,coord.cp6.y);
+	// context.bezierCurveTo(coord.cp1.x,coord.cp1.y,coord.cp2.x,coord.cp2.y,coord.cp3.x,coord.cp3.y);
+
+	// context.bezierCurveTo(100, 100, 200, 100, 300, 100);
+	context.beginPath();
+    context.moveTo(75,40);
+    context.bezierCurveTo(75,37,70,25,50,25);
+    context.bezierCurveTo(20,25,20,62.5,20,62.5);
+    context.bezierCurveTo(20,80,40,102,75,120);
+    context.bezierCurveTo(110,102,130,80,130,62.5);
+    context.bezierCurveTo(130,62.5,130,25,100,25);
+    context.bezierCurveTo(85,25,75,37,75,40);
+    context.fill();
+
+	// context.bezierCurveTo(coord.cp4.x,coord.cp4.y,coord.cp5.x,coord.cp5.y,coord.cp6.x,coord.cp6.y);
 	
 	// context.bezierCurveTo(20,25,20,62.5,20,62.5);
     // context.bezierCurveTo(20,80,40,102,75,120);
