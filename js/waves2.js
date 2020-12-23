@@ -1,6 +1,42 @@
+// Control Points Generator
+function pointsGenerator() {
+
+	let width = 500
+	let height = 800
+
+	const layers = 1
+	const frequency = 5
+	const amplitude = 100
+	
+	let points = new Array(frequency)
+
+	for (let i = 0; i < frequency; i++) {
+		let p = i-1
+		if (i === 0) {	// First point
+			points[i] = {
+				cp0: {x: 0, y: 0},
+				cp1: {x: 0, y: 0},
+				cp2: {x: 0, y: 0},
+				cp4: {x: 0, y: 0}
+			}
+		} else if (i < frequency-1) {	// Middle points
+		} else {	// Last point
+
+		}
+	}
+
+	// let 
+
+
+	
+	return points
+}
+
+
+
 function curveGenerator(canvasWidth, canvasHeight) {
 	let frequency = 5
-	let amplitude = getRandom(400,500)	
+	let amplitude = getRandom(100,200)	
 
 	let maxLength = canvasWidth/1.2
 	let sum = 0
@@ -9,11 +45,11 @@ function curveGenerator(canvasWidth, canvasHeight) {
 	let body = {
 		topLeft: {
 			x: 0,
-			y: canvasHeight - amplitude
+			y: canvasHeight - amplitude - 300
 		},
 		topRight: {
 			x: canvasWidth,
-			y: canvasHeight - amplitude
+			y: canvasHeight - amplitude - 300
 		},
 		bottomRight: {
 			x: canvasWidth,
@@ -23,6 +59,11 @@ function curveGenerator(canvasWidth, canvasHeight) {
 			x: 0,
 			y: canvasHeight
 		}
+	}
+
+	let waveSize = {
+		min: body.topLeft.y + amplitude,
+		max: body.topLeft.y - amplitude 
 	}
 
 
@@ -40,7 +81,7 @@ function curveGenerator(canvasWidth, canvasHeight) {
 
 
 
-	// Generate Lines X-Position
+	// Generate Lines Points
 	let lineX = new Array(frequency)
 	let lineY = new Array(frequency)
 	for (let i = 0; i < frequency; i++) {
@@ -53,7 +94,7 @@ function curveGenerator(canvasWidth, canvasHeight) {
 			}
 			lineY[i] = {
 				start: body.topLeft.y,
-				end: getRandom(150,500)
+				end: getRandom(waveSize.min,waveSize.max)
 			}
 		} else if (i < frequency-1) {	// Middle points
 			lineX[i] = {
@@ -62,7 +103,7 @@ function curveGenerator(canvasWidth, canvasHeight) {
 			},
 			lineY[i] = {
 				start: prevY.end,
-				end: getRandom(150,500)
+				end: getRandom(waveSize.min,waveSize.max)
 			}
 		} else {	// Last point
 			lineX[i] = {
@@ -148,4 +189,6 @@ function waves() {
 	let context = canvas.getContext('2d');
 	canvasSize(canvas, context);
 	waveGenerator(canvas, context);
+
+	console.log(pointsGenerator())
 };

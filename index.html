@@ -51,7 +51,7 @@
     </script>
 </head>
 <body>
-    <div class="art" onclick="redraw()">
+    <div class="art" onclick="init()">
         <canvas id="background"></canvas>
         <canvas id="stars"></canvas>
         <canvas id="waves"></canvas>
@@ -62,33 +62,25 @@
     <script src="/js/utils.js"></script>
     <script src="/js/palette.js"></script>
     
-    <!-- <script src="/js/background.js"></script> -->
+    <script src="/js/geometry.js"></script>
+    <script src="/js/background.js"></script>
     <!-- <script src="/js/stars.js"></script> -->
-    <script src="/js/waves2.js"></script>
+    <!-- <script src="/js/waves2.js"></script> -->
     <!-- <script src="/js/moon.js"></script> -->
     <!-- <script src="/js/anim.js"></script> -->
     <!-- <script src="/js/noise.js"></script> -->
    
     <script>
         function init() {
-            // background();
+            background();
             // stars();
-            waves();
+            // waves();
+            geometry();
             // moon();
-            // noise();
-            // palette();
-        };
-        function redraw() {
-            // background();
-            // stars();
-            waves();
-            // moon();
-            // anim();
             // noise();
             // palette();
         };
         init()
-        // redraw()
     </script>
 </body>
 </html>
