@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+    # gart-front
+    gart-front:
+        container_name: gart-front
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        image: gart-front:1.0
+        ports:
+            - 81:5000 # Dev
+            - 80:5001 # Preview
+        environment:
+            HOST: 0.0.0.0
+        volumes:
+            - ./front:/home/app
+            - /home/app/node_modules
+        working_dir: /home/app
+        # command: tail -F anything
+        command: npm run dev
