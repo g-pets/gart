@@ -1,6 +1,5 @@
 <template lang="pug">
-.app-container(id="container")
-.update(@click="updateScene()") Update
+.app-container(id="container" @click="updateScene()")
 </template>
 
 <script>
@@ -11,65 +10,25 @@ import {
 	Color,
 	PerspectiveCamera,
 	Object3D,
-	GridHelper,
-	AmbientLight,
-	PointLight,
-	PointLightHelper,
-	Vector2,
 	PCFSoftShadowMap,
 	ACESFilmicToneMapping,
 	sRGBEncoding
 } from "three"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls"
-import Stats from "stats-js"
+// import Stats from "stats-js"
 
-import { starSystem } from "~/helpers/starSystem"
-
+import { generateStar, generateMoons } from "~/helpers/starSystem"
 
 // Objects
+import Terrain from "~/objects/Terrain.js"
 import Star from "~/objects/_Star.js"
-import Planet from "~/objects/_Planet.js"
 import Moon from "~/objects/_Moon.js"
 
 export default {
 	setup() {
-		let scene, renderer, camera, controls, stats, star, planet, moon
-		let time = 0
-		let clock
-		let effects = []
+		let scene, camera, renderer, star, planet, time = 10
+		let generatedStar = generateStar()
+		let generatedMoons = generateMoons()
 
-		let planetMesh, moonMesh, starMesh
-
-		let system = starSystem()
-		// console.log(starSystem().stars)
-
-		// let systemConfig = {
-		// 	// Sizes 1unit = 1000km
-		// 	// starRadius: 695.5,
-		// 	// planetRadius: 6.3,
-		// 	// moonRadius: 1.7,
-		// 	// starDistance: 149597,
-		// 	// moonDistance: 384
-		// 	starRadius: 60,
-		// 	planetRadius: 10,
-		// 	moonRadius: 2,
-		// 	starDistance: 100,
-		// 	moonDistance: 30
-		// }
-
-		const mouse = new Vector2()
-		const target = new Vector2()
-		const windowHalf = new Vector2( window.innerWidth / 2, window.innerHeight / 2 )
-
-		function createStats() {
-			stats = new Stats()
-			stats.setMode(0)
-			stats.domElement.style.position = 'absolute'
-			stats.domElement.style.left = '0'
-			stats.domElement.style.top = '0'
-			return stats
-		}
 
 
 		function init() {
@@ -81,7 +40,7 @@ export default {
 			renderer.shadowMap.enabled = true
 			renderer.shadowMap.type = PCFSoftShadowMap
 			renderer.toneMapping = ACESFilmicToneMapping
-			renderer.toneMappingExposure = 0.1
+			renderer.toneMappingExposure = .5
 			renderer.physicallyCorrectLights = true
 			renderer.gammaFactor = 2.2
 			renderer.outputEncoding = sRGBEncoding
@@ -89,110 +48,55 @@ export default {
 			renderer.setSize(width, height)
 			container.appendChild(renderer.domElement)
 			scene = new Scene()
-
-			stats = createStats()
-      		container.appendChild(stats.domElement)
 			
 			// Camera
-			camera = new PerspectiveCamera(50, width/height, 1, 10000000)
-			camera.position.set(0, 1000, 100000)
-			// camera.lookAt(0, 5, 5)
-			// camera.updateProjectionMatrix()
+			camera = new PerspectiveCamera(45, width/height, 0.1, 10000)
+			camera.position.set(0, 800, -2000)
+			camera.lookAt(0, 550, 0)
 			
 			// Camera Orbit
-			controls = new OrbitControls(camera, renderer.domElement)
-			controls.addEventListener('change', () => {
-				renderer.render( scene, camera )
-			});
+			// controls = new OrbitControls(camera, renderer.domElement)
+			// controls.addEventListener('change', () => {
+			// 	renderer.render( scene, camera )
+			// })
 
-			controls = new PointerLockControls( camera, document.body );
-			controls.addEventListener( 'lock', function () {
-				menu.style.display = 'none';
-			});
+			scene.background = new Color(0x160016)
 
-			controls.addEventListener( 'unlock', function () {
-				menu.style.display = 'block';
-			});
+			planet = new Terrain().Mesh
+			scene.add(planet)
 
-			// Grid
-			// const grid = new GridHelper(10000, 100, 0x00ff00, 0x555555 )
-			// scene.add(grid)
+			let starPivot = new Object3D()
+			starPivot.name = "starPivot"
+			planet.add(starPivot)
+			starPivot.position.set(0, 0, 0)
+			star = new Star({radius:generatedStar.radius, position:generatedStar.position}).Mesh
+			starPivot.add(star)
 
-			// Light
-			const light = new PointLight(0xffffff)
-			light.power = 40000000
-			light.position.set(0, 100000, 0)
-			scene.add(light)
-			const pointLightHelper = new PointLightHelper( light, 100 );
-			scene.add( pointLightHelper );
-
-			scene.background = new Color(0x444444)
-
-			star = new Star({radius:system.star.radius, position:system.star.position}).Mesh
-			scene.add(star)
-			system.planets.forEach(planet => {
-				let planetPivot = new Object3D()
-				star.add(planetPivot)
-				planetMesh = new Planet({radius:planet.radius, position:planet.position}).Mesh
-				planetPivot.add(planetMesh)
-				planet.moons.forEach(moon => {
-					let moonPivot = new Object3D()
-					planetPivot.add(moonPivot)
-					moonMesh = new Moon({radius:moon.radius, position:moon.position}).Mesh
-					moonPivot.add(moonMesh)
-				})
+			generatedMoons.forEach(moon => {
+				let moonPivot = new Object3D()
+				moonPivot.name = "moonPivot"
+				planet.add(moonPivot)
+				moon = new Moon({radius:moon.radius, position:moon.position}).Mesh
+				moonPivot.add(moon)
 			})
-
-				
-
-			
-		
 			renderer.render(scene, camera)
-
-			// document.addEventListener( 'mousemove', onMouseMove, false )
-
 		}
-
-		// function onMouseMove( event ) {
-		// 	mouse.x = ( event.clientX - windowHalf.x )
-		// 	mouse.y = ( event.clientY - windowHalf.x )
-		// }
 		
 		function runSystem() {
-			time += 0.005
-			// star.rotation.y += 0.005
-			// star.material.uniforms.time.value = time
-			// planetMesh.rotation.y = time * 0.05
-
-			
-			star.children.forEach((planet, pi) => {
-				planet.rotation.y = time * 0.5 / pi
-				planet.children.forEach((moon, index) => {
-					if(moon.type !== "Object3D") return
-					moon.rotation.x = time * 0.5 / index
-				})
+			time += 0.0005
+			planet.children.forEach((planetItem, index) => {
+				if(planetItem.name == "starPivot") {
+					planetItem.rotation.y = time * 5
+				} else if(planetItem.name == "moonPivot") {
+					planetItem.rotation.z = time * 3 * (index+1)
+				} else return
 			})
-			
-			// moon.rotateY(0.005)
-			// moon.translateX(.5)
-			// planet.rotation.y += 0.005
 		}
 
 		function animate() {
 			requestAnimationFrame(animate)
-			
-			// if(star) star.material.uniforms.time.value = time
-			// controls.update()
-			// Mouse=Camera
-			// target.x = ( 1 - mouse.x ) * 0.002;
-			// target.y = ( 1 - mouse.y ) * 0.002;
-			// camera.rotation.x += 0.5 * ( target.y - camera.rotation.x );
-			// camera.rotation.y += 0.5 * ( target.x - camera.rotation.y );
-			// 
-			// runSystem()
-			
-			// renderer.render(scene, camera)
-			stats.update()
+			runSystem()
+			renderer.render(scene, camera)
 		}
 
 		const updateScene = () => init()
@@ -222,6 +126,4 @@ export default {
 	padding: 0.5em
 	font-size: 0.8em
 	color: #fff
-	&:hover
-		cursor: pointer
 </style>

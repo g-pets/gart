@@ -7,7 +7,7 @@ class Terrain {
 		this._material = new MeshPhongMaterial({
 			vertexColors: true,
 			flatShading: true,
-			shininess: 1
+			shininess: 0
 		})
 
 		this._mesh = new Mesh(this._geometry, this._material)
@@ -50,7 +50,10 @@ class Terrain {
 	}
 
 	get Mesh() {
-		return this._mesh
+		let mesh = this._mesh
+		mesh.receiveShadow = true
+		// object.position(0,0,0)
+		return mesh
 	}
 }
 

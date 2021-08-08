@@ -10,7 +10,7 @@ class Moon {
 	}
 
 	_createGeometry(radius) {
-		const geometry = new IcosahedronGeometry(radius, 5)
+		const geometry = new IcosahedronGeometry(radius, 1)
 		return geometry
 	}
 

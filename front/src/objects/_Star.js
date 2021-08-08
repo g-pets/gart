@@ -1,7 +1,15 @@
-import { IcosahedronGeometry, MeshPhongMaterial, Mesh, PointLight } from "three"
-// import { simpleStarVertexShader } from "~/shaders/simpleStarVertexShader.js"
-// import { simpleStarFragmentShader } from "~/shaders/simpleStarFragmentShader.js"
+import { IcosahedronGeometry, MeshStandardMaterial, Mesh, PointLight } from "three"
+import { random } from "~/utils"
 
+let colors = [
+	0x5ca0ff, 
+	0xffffff,
+	0xfffa5c,
+	0xffa35c,
+	0xff4747
+]
+
+let color = colors[random(0,colors.length-1)]
 
 class Star {
 	constructor({radius=30, position=[0,0,0]}) {
@@ -19,24 +27,23 @@ class Star {
 	}
 
 	_createLigh() {
-		const light = new PointLight(0xffffff)
-		light.power = 3000000
+		const light = new PointLight(color)
+		light.power = 200000
 		light.position.set(0, 0, 0)
 		light.castShadow = true
-		// light.shadow.mapSize.width = 512; // default
-		// light.shadow.mapSize.height = 512; // default
+		light.shadow.mapSize.width = 1024; // default
+		light.shadow.mapSize.height = 1024; // default
 		light.shadow.camera.near = 0.5; // default
 		light.shadow.camera.far = 1000000; // default
 		return light
 	}
 
 	_createMaterial() {
-		const material = new MeshPhongMaterial({
+		const material = new MeshStandardMaterial({
 			// vertexColors: true,
-			flatShading: true,
-			color: 0xff5500,
-			shininess: 100,
-			// emissive: 0xff5500,
+			// flatShading: true,
+			color: color,
+			emissive: color,
 		})
 		material.color.convertSRGBToLinear()
 		return material
@@ -44,7 +51,7 @@ class Star {
 
 	get Mesh() {
 		let object = this._mesh
-		// object.add(this._light)
+		object.add(this._light)
 		return object
 	}
 }
